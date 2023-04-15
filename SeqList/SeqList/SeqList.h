@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<assert.h>
 typedef int DateType;
 
 typedef struct SeqList
@@ -25,3 +26,13 @@ void SLPopFront(SL* psl);
 void SLPrint(SL* psl);
 
 void SLDestroy(SL* psl);
+
+void SLInsert(SL* psl ,int pos,DateType x);
+
+void SLModify(SL* psl, int pos, DateType x);
+
+int SLFind(SL* psl, DateType x);
+
+void SLEares(SL* psl, int pos);
+
+
