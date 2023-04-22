@@ -15,7 +15,6 @@ SListNode* BuySListNode(SLTDateType x)
 // 单链表打印
 void SListPrint(SListNode* plist)
 {
-	assert(plist != NULL);
 	SListNode* cur = plist;
 	while (cur != NULL)
 	{
@@ -27,7 +26,7 @@ void SListPrint(SListNode* plist)
 // 单链表尾插
 void SListPushBack(SListNode** pplist, SLTDateType x)
 {
-	
+	assert(pplist);
 	SListNode* newnode = BuySListNode(x);
 	if (NULL == *pplist)
 	{
@@ -47,6 +46,7 @@ void SListPushBack(SListNode** pplist, SLTDateType x)
 // 单链表的头插
 void SListPushFront(SListNode** pplist, SLTDateType x)
 {
+	assert(pplist);
 	SListNode* newnode = BuySListNode(x);
 	newnode->next = *pplist;
 	*pplist = newnode;
@@ -55,6 +55,7 @@ void SListPushFront(SListNode** pplist, SLTDateType x)
 void SListPopBack(SListNode** pplist)
 {
 	assert(*pplist);
+	assert(pplist);
 	if (NULL == (*pplist)->next)
 	{
 		free(*pplist);
@@ -77,6 +78,7 @@ void SListPopBack(SListNode** pplist)
 void SListPopFront(SListNode** pplist)
 {
 	assert(*pplist);
+	assert(pplist);
 	SListNode* tmp = *pplist;
 	*pplist = (*pplist)->next;
 	free(tmp);
@@ -85,7 +87,6 @@ void SListPopFront(SListNode** pplist)
 // 单链表查找
 SListNode* SListFind(SListNode* plist, SLTDateType x)
 {
-	assert(plist != NULL);
 	SListNode* cur = plist;
 	while (cur != NULL)
 	{
@@ -99,21 +100,22 @@ SListNode* SListFind(SListNode* plist, SLTDateType x)
 }
 // 单链表在pos位置之后插入x
 // 分析思考为什么不在pos位置之前插入？
-void SListInsertAfter(SListNode** pos, SLTDateType x)
+void SListInsertAfter(SListNode* pos, SLTDateType x)
 {
-	assert(*pos != NULL);
+	assert(pos != NULL);
 	SListNode* cur = BuySListNode(x);
-	cur->next = (*pos)->next;
-	(*pos)->next = cur;
+	cur->next = (pos)->next;
+	(pos)->next = cur;
 
 }
 // 单链表删除pos位置之后的值
 // 分析思考为什么不删除pos位置？
-void SListEraseAfter(SListNode** pos)
+void SListEraseAfter(SListNode* pos)
 {
-	assert(*pos != NULL);
-	SListNode* cur = (*pos)->next;
-	(*pos)->next = (*pos)->next->next;
+	assert(pos != NULL);
+	assert(pos->next != NULL);
+	SListNode* cur = (pos)->next;
+	(pos)->next = (pos)->next->next;
 	free(cur);
 	cur = NULL;
 
