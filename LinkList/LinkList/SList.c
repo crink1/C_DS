@@ -123,7 +123,7 @@ void SListEraseAfter(SListNode* pos)
 // 单链表的销毁
 void SListDestroy(SListNode** pplist)
 {
-	assert(*pplist != NULL);
+	assert(pplist != NULL);
 	SListNode *cur = *pplist;
 	SListNode* tmp = cur;
 	while (cur != NULL)
@@ -132,4 +132,5 @@ void SListDestroy(SListNode** pplist)
 		free(cur);
 		cur = tmp;
 	}
+	*pplist = NULL;
 }
