@@ -38,7 +38,13 @@ BTNode* BinaryTreeCreate()
 // 二叉树销毁
 void BinaryTreeDestory(BTNode** root)
 {
-	
+	if (*root != NULL)
+	{
+		return;
+	}
+	BinaryTreeDestory((*root)->left);
+	BinaryTreeDestory((*root)->right);
+	free(*root);
 }
 // 二叉树节点个数
 int BinaryTreeSize(BTNode* root)
@@ -75,7 +81,7 @@ int BinaryTreeLevelKSize(BTNode* root, int k)
 	{
 		return 1;
 	}
-	return BinaryTreeLevelKSize(root->left, k - 1) + BinaryTreeLeafSize(root->right, k - 1);
+	return BinaryTreeLevelKSize(root->left, k - 1) + BinaryTreeLevelKSize(root->right, k - 1);
 
 
 }
@@ -109,19 +115,41 @@ void BinaryTreePrevOrder(BTNode* root)
 	{
 		return;
 	}
+	printf("%d", root->data);
 	BinaryTreePrevOrder(root->left);
 	BinaryTreePrevOrder(root->right);
 
 }
 // 二叉树中序遍历
-void BinaryTreeInOrder(BTNode* root);
+void BinaryTreeInOrder(BTNode* root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+	
+	BinaryTreeInOrder(root->left);
+	printf("%d", root->data);
+	BinaryTreeInOrder(root->right);
+} 
 // 二叉树后序遍历
-void BinaryTreePostOrder(BTNode* root);
+void BinaryTreePostOrder(BTNode* root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+
+	BinaryTreePostOrder(root->left);
+	BinaryTreePostOrder(root->right);
+	printf("%d", root->data);
+}
 // 层序遍历
 void BinaryTreeLevelOrder(BTNode* root)
 {
 	Queue q;
 	QueueInit(&q);
+	QueuePush(&q,root);
 	while (!QueueEmpty(&q))
 	{
 		BTNode* front = QueueFront(&q);
@@ -129,16 +157,31 @@ void BinaryTreeLevelOrder(BTNode* root)
 		printf("%d", front->data);
 		if (front->left != NULL)
 		{
-			QueuePush(front->left,front->left->data);
+			QueuePush(&q,front->left);
 		}
 
 		if (front->right != NULL)
 		{
-			QueuePush(front->right, front->right->data);
+			QueuePush(&q, front->right);
 		}
 	}
 	printf("\n");
 	QueueDestroy(&q);
 }
 // 判断二叉树是否是完全二叉树
-int BinaryTreeComplete(BTNode* root);
+int BinaryTreeComplete(BTNode* root)
+{
+	if (root == NULL)
+	{
+		return 1;
+	}
+	if (root->left == NULL && root->right == NULL)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	return BinaryTreeComplete(root->left) * BinaryTreeComplete(root->right);
+}
