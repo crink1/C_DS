@@ -8,12 +8,15 @@ int main()
 	printf("%d\n", BinaryTreeLeafSize(root));
 	printf("%d\n", BinaryTreeSize(root));
 	printf("%d\n", BinaryTreeLevelKSize(root,2));
-	//BinaryTreePrevOrder(root);
-	//printf("\n");
-	//BinaryTreeInOrder(root);
-	//printf("\n");
-	//BinaryTreePostOrder(root);
-	//printf("\n");
-	//BinaryTreeLevelOrder(root);
+	BinaryTreePrevOrder(root);
+	printf("\n");
+	BinaryTreeInOrder(root);
+	printf("\n");
+	BinaryTreePostOrder(root);
+	printf("\n");
+	BinaryTreeLevelOrder(root);
+	int x=BinaryTreeComplete(root);
+	printf("%d", x);
+	BinaryTreeDestory(root);
 	return 0;
 }

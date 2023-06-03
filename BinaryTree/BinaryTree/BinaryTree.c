@@ -26,10 +26,12 @@ BTNode* BinaryTreeCreate()
 	BTNode* node4 = BuyNode(4);
 	BTNode* node5 = BuyNode(5);
 	BTNode* node6 = BuyNode(6);
+	BTNode* node7 = BuyNode(7);
 
 	node1->left = node2;
 	node1->right = node4;
 	node2->left = node3;
+	node2->right = node7;
 	node4->left = node5;
 	node4->right = node6;
 
@@ -149,7 +151,11 @@ void BinaryTreeLevelOrder(BTNode* root)
 {
 	Queue q;
 	QueueInit(&q);
-	QueuePush(&q,root);
+	if (root)
+	{
+		QueuePush(&q, root);
+	}
+	
 	while (!QueueEmpty(&q))
 	{
 		BTNode* front = QueueFront(&q);
@@ -171,17 +177,34 @@ void BinaryTreeLevelOrder(BTNode* root)
 // 判断二叉树是否是完全二叉树
 int BinaryTreeComplete(BTNode* root)
 {
-	if (root == NULL)
+	Queue q;
+	QueueInit(&q);
+	if (root)
 	{
-		return 1;
+		QueuePush(&q, root);
 	}
-	if (root->left == NULL && root->right == NULL)
+	while (!QueueEmpty(&q))
 	{
-		return 1;
+		
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+		if (front == NULL)
+		{
+			break;
+		}
+		QueuePush(&q, front->left);
+		QueuePush(&q, front->right);
+
 	}
-	else
+	while (!QueueEmpty(&q))
 	{
-		return 0;
+		if (QueueFront(&q))
+		{
+			return 0;
+		}
+		QueuePop(&q);
 	}
-	return BinaryTreeComplete(root->left) * BinaryTreeComplete(root->right);
+	return 1;
+
+	
 }
