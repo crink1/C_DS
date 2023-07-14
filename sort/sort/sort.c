@@ -155,3 +155,112 @@ void HeapSort(int* a, int n)
 		AdjustDwon(a, i, 0);
 	}
 }
+
+int PartQuickSort1(int* a, int left, int right)
+{
+	int keyi = left;
+	int begin = left;
+	int end = right;
+	while (begin < end)
+	{
+		while (begin < end && a[end] >= a[keyi])
+		{
+			end--;
+		}
+		while (begin < end && a[begin] <= a[keyi])
+		{
+			begin++;
+		}
+		swap(&a[begin], &a[end]);
+
+	}
+	swap(&a[keyi], &a[end]);
+	keyi = end;
+	return keyi;
+}
+
+int PartQuickSort2(int* a, int left, int right)
+{
+	int key = a[left];
+	int hole = left;
+	while (left < right)
+	{
+		while (left < right && a[right] >= key)
+		{
+			right--;
+		}
+		a[hole] = a[right];
+		hole = right;
+		
+		
+		while (left < right && a[left] <= key)
+		{
+			left++;
+		}
+		a[hole] = a[left];
+		hole = left;
+		
+	}
+	a[hole] = key;
+	return hole;
+}
+
+int PartQuickSort3(int* a, int left, int right)
+{
+	int prev = left;
+	int cur = left + 1;
+	int keyi = left;
+	while(cur <= right)
+	{
+		if (a[cur] < a[keyi] && ++prev != cur)
+		{
+			swap(&a[cur], &a[prev]);
+		}
+		cur++;
+	}
+	swap(&a[keyi], &a[prev]);
+	keyi = prev;
+	return keyi;
+}
+
+void QuickSort(int* a, int begin, int end)
+{
+	if (begin >= end)
+	{
+		return;
+	}
+
+	int keyi = PartQuickSort3(a, begin, end);
+
+	QuickSort(a, begin, keyi - 1);
+	QuickSort(a, keyi + 1 , end);
+	
+}
+
+void QuickSortNonR(int* a, int begin, int end)
+{
+	ST s;
+	STInit(&s);
+	STPush(&s, end);
+	STPush(&s, begin);
+	while (!STEmpty(&s))
+	{
+		int left = STTop(&s);
+		STPop(&s);
+		int right = STTop(&s);
+		STPop(&s);
+		int keyi = PartQuickSort1(a, left, right);
+		if (left < keyi-1)
+		{
+			STPush(&s, keyi - 1);
+			STPush(&s, left);
+		}
+		if (right > keyi + 1)
+		{
+			STPush(&s, right);
+			STPush(&s, keyi+1);
+		}
+	}
+	STDestroy(&s);
+
+}

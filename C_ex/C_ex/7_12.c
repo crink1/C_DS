@@ -11,9 +11,10 @@
 //			if (cur != prev)
 //			{
 //				swap(&a[prev], &a[cur]);
-//			}	
+//			}
 //		}
 //		cur++;
+//	}
 //	if (left != prev)
 //	{
 //		swap(&a[prev], &a[keyi]);
