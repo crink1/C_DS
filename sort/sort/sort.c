@@ -71,12 +71,18 @@ void BubbleSort(int* a, int n)
 {
 	for (int i = 0; i < n-1; i++)
 	{
+		int flag = 1;
 		for (int j = 0; j < n - i - 1; j++)
 		{
 			if (a[j] > a[j + 1])
 			{
+				flag = 0;
 				swap(&a[j], &a[j + 1]);
 			}
+		}
+		if (flag)
+		{
+			break;
 		}
 	}
 }
@@ -114,7 +120,7 @@ void SelectSort(int* a, int n)
 
 
 
-void AdjustDwon(int* a, int n, int root)
+void AdjustDown(int* a, int n, int root)
 {
 	int parent = root;
 	int child = parent * 2 + 1;
@@ -124,8 +130,7 @@ void AdjustDwon(int* a, int n, int root)
 		{
 			child++;
 		}
-		else
-		{
+		
 			if (a[parent] < a[child])
 			{
 				swap(a + parent, a + child);
@@ -136,7 +141,7 @@ void AdjustDwon(int* a, int n, int root)
 			{
 				break;
 			}
-		}
+		
 	}
 }
 void HeapSort(int* a, int n)
@@ -144,7 +149,7 @@ void HeapSort(int* a, int n)
 	//建堆
 	for (int i = (n - 1 - 1) / 2; i >= 0; i--)
 	{
-		AdjustDwon(a, n, i);
+		AdjustDown(a, n, i);
 	}
 
 	//排序
@@ -152,7 +157,7 @@ void HeapSort(int* a, int n)
 	{
 		swap(a, a + i);
 
-		AdjustDwon(a, i, 0);
+		AdjustDown(a, i, 0);
 	}
 }
 
@@ -263,4 +268,165 @@ void QuickSortNonR(int* a, int begin, int end)
 	}
 	STDestroy(&s);
 
+}
+
+void _MergeSort(int* a, int begin, int end, int* tmp)
+{
+	if (begin == end)
+	{
+		return;
+	}
+	if (end - begin + 1 < 10)
+	{
+		InsertSort(a + begin, end - begin + 1);
+		return;
+	}
+	int mid = (begin + end) / 2;
+	_MergeSort(a, begin, mid, tmp);
+	_MergeSort(a, mid+1,end, tmp);
+
+	
+
+	int begin1 = begin;
+	int end1 = mid;
+	int begin2 = mid + 1;
+	int end2 = end;
+	int i = begin;
+	while ( begin1 <= end1 && begin2 <= end2)
+	{
+		if (a[begin1] < a[begin2])
+		{
+			tmp[i++] = a[begin1++];
+		}
+		else
+		{
+			tmp[i++] = a[begin2++];
+		}
+	}
+	while (begin1 <= end1)
+	{
+		tmp[i++] = a[begin1++];
+	}
+	while (begin2 <= end2)
+	{
+		tmp[i++] = a[begin2++];
+	}
+	memcpy(a + begin, tmp + begin, sizeof(int) * (end - begin + 1));
+}
+
+// 归并排序递归实现
+void MergeSort(int* a, int n)
+{
+
+	int* tmp = (int*)malloc(sizeof(int) * n);
+
+	_MergeSort(a, 0, n - 1, tmp);
+
+	free(tmp);
+
+}
+// 归并排序非递归实现
+void MergeSortNonR(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	if (tmp == NULL)
+	{
+		perror("malloc fail");
+	}
+	int gap = 1;
+	
+	while (gap < n)
+	{
+		int j = 0;
+		for (int i = 0; i < n; i += gap * 2)
+		{
+			int begin1 = i;
+			int end1 = i + gap - 1;
+			int begin2 = i + gap;
+			int end2 = i + 2 * gap - 1;
+
+			if (end1 > n-1)
+			{
+				end1 = n - 1;
+				begin2 = n;
+				end2 = n - 1;
+			}
+			else if(begin2 > n-1)
+			{
+				begin2 = n;
+				end2 = n - 1;
+			}
+			else if (end2 > n - 1)
+			{
+				end2 = n - 1;
+			}
+
+			while (begin1 <= end1 && begin2 <= end2)
+			{
+				if (a[begin1] < a[begin2])
+				{
+					tmp[j++] = a[begin1++];
+				}
+				else
+				{
+					tmp[j++] = a[begin2++];
+				}
+			}
+			while (begin1 <= end1)
+			{
+				tmp[j++] = a[begin1++];
+			}
+			while (begin2 <= end2)
+			{
+				tmp[j++] = a[begin2++];
+			}
+
+		}
+
+		memcpy(a, tmp, sizeof(int) * n);
+		gap *= 2;
+	}
+	free(tmp);
+}
+
+// 计数排序
+void CountSort(int* a, int n)
+{
+	int min = a[0];
+	int max = a[0];
+	
+	for (int i = 0; i < n; i++)
+	{
+		if (a[i] < min)
+		{
+			min = a[i];
+		}
+		if (a[i] > max)
+		{
+			max = a[i];
+		}
+	}
+
+	int range = max - min + 1;
+
+	int* count = (int*)malloc(sizeof(int) * range);
+	if (count == NULL)
+	{
+		perror("malloc fail");
+	}
+	memset(count, 0, sizeof(int) * range);
+	for (int i = 0; i < n; i++)
+	{
+		count[a[i] - min]++;
+	}
+	int k = 0;
+	for (int i = 0; i < range; i++)
+	{
+		while (count[i]--)
+		{
+			
+			a[k++] = i+min;
+		}
+	}
+	
 }

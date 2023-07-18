@@ -2,7 +2,7 @@
 
 int main()
 {
-	int a[] = { 5,7,3,8,1,9,0,4,2,6};
+	int a[] = { 5,7,3,8,1,9,0,4,2,6,6};
 	size_t sz = sizeof(a) / sizeof(a[0]);
 	//InsertSort(a, sz);
 	//ShellSort(a, sz);
@@ -10,7 +10,10 @@ int main()
 	//SelectSort(a, sz);
 	//HeapSort(a, sz);
 	//QuickSort(a, 0, sz - 1);
-	QuickSortNonR(a, 0, sz - 1);
+	//QuickSortNonR(a, 0, sz - 1);
+	MergeSort(a, sz);
+	//MergeSortNonR(a, sz);
+	//CountSort(a, sz);
 	sortprint(a, sz);
 	return 0;
 }

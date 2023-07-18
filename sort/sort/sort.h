@@ -26,3 +26,11 @@ void HeapSort(int* a, int n);
 void QuickSort(int* a, int begin, int end);
 
 void QuickSortNonR(int* a, int begin, int end);
+
+// 归并排序递归实现
+void MergeSort(int* a, int n);
+// 归并排序非递归实现
+void MergeSortNonR(int* a, int n);
+
+// 计数排序
+void CountSort(int* a, int n);
